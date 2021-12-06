@@ -2,6 +2,8 @@ import prismaClient from '../prisma';
 import bcrypt from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 
+import { uploadImage } from '../middlewares/uploadImage';
+
 interface IUserBody {
   email: string,
   password: string,
@@ -10,15 +12,14 @@ interface IUserBody {
   username: string,
 }
 
-interface IFileBody {
-  firebaseurl: string,
-}
-
 class AuthenticateUserService {
 
-  async executeSignUp(file: IFileBody, body: IUserBody) {
+  async executeSignUp(file, body: IUserBody) {
     const { email, password, firstname, lastname, username } = body;
-    const { firebaseurl } = file;
+
+    if (!file) {
+      return { message: 'Error identifying profile image' }
+    }
 
     let user = await prismaClient.user.findFirst({
       where: {
@@ -34,12 +35,24 @@ class AuthenticateUserService {
           first_name: firstname,
           last_name: lastname,
           user_name: username,
-          profile_img: firebaseurl,
+          profile_img: '',
         }
       });
     } else {
       return { message: 'User with already exists' };
     }
+
+    const imageUrl = await uploadImage(user.id, file, 'profile_image');
+
+    user = await prismaClient.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        profile_img: imageUrl as unknown as string,
+      }
+    })
+
     return user;
   }
 

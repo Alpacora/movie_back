@@ -10,7 +10,8 @@ import { DeleteUserController } from './controllers/DeleteUserController';
 const router = Router();
 
 //Auth
-router.post('/auth', Multer.single('file'), uploadImage, new AuthenticateUserController().handleSignUp);
+// router.post('/auth', Multer.single('file'), uploadImage, new AuthenticateUserController().handleSignUp);
+router.post('/auth', Multer.single('file'), new AuthenticateUserController().handleSignUp);
 router.post('/login', new AuthenticateUserController().handleSignIn);
 
 //User
