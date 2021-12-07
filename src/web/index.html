@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<script>
+  function handleConfirm() {
+    fetch(`http://localhost:3333/validade/email/ac3e6428-e1b5-41c1-94da-999d71638c02`,
+      {
+        method: 'PATCH',
+      })
+      .then((response) => {
+        window.location.href = 'https://google.com.br/'
+        response.json().then(data => {
+          console.log(data);
+        })
+      })
+  }
+</script>
+
+<body>
+  <button onclick="handleConfirm()">Verificar email</button>
+</body>
+
+</html>

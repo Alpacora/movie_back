@@ -15,6 +15,7 @@ model User {
   last_name   String
   user_name   String
   profile_img String?
+  verified_email Boolean 
 
   @@map("users")
 }

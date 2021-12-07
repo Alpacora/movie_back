@@ -1,4 +1,5 @@
 import prismaClient from "../prisma"
+import { handleDeleteUserFolderBucket } from '../middlewares/UploadImage';
 
 class DeleteUserService {
   async execute(user_id: string) {
@@ -14,6 +15,9 @@ class DeleteUserService {
           id: user_id
         }
       })
+
+      await handleDeleteUserFolderBucket(user_id, 'profile_image')
+
       return { message: 'User deleted successfully' };
     } else {
       return { message: 'User does not exist' };

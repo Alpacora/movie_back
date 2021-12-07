@@ -22,7 +22,31 @@ class AuthenticateUserController {
 
       return response.json(result);
     } catch (error) {
+      return response.json({ 'Error': error.message })
+    }
+  }
 
+  async handleValidadeEmail(request: Request, response: Response) {
+    const { id } = request.params;
+    try {
+      const service = new AuthenticateUserService();
+
+      const result = await service.executeValidadeEmail(id);
+      response.json(result);
+    } catch (error) {
+      return response.json({ 'Error': error.message })
+    }
+  }
+
+  async handleSendValidateEmail(request: Request, response: Response) {
+    const { id } = request.params;
+    try {
+      const service = new AuthenticateUserService();
+
+      const result = await service.executeSendValidadeEmail(id);
+      response.json(result);
+    } catch (error) {
+      return response.json({ 'Error': error.message })
     }
   }
 }

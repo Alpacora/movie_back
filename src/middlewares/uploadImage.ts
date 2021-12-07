@@ -1,5 +1,5 @@
 import firebase from 'firebase-admin';
-import { Request, Response, NextFunction } from "express";
+// import { Request, Response, NextFunction } from "express";
 
 // export function uploadImage(request: Request, response: Response, next: NextFunction) {
 //   if (!request.file) {
@@ -28,8 +28,9 @@ import { Request, Response, NextFunction } from "express";
 
 // }
 
-export async function uploadImage(userId: string, file, newFileName: string) {
-  const bucket = firebase.storage().bucket();
+const bucket = firebase.storage().bucket();
+
+const uploadImage = async (userId: string, file, newFileName: string) => {
 
   const image = file;
 
@@ -54,3 +55,12 @@ export async function uploadImage(userId: string, file, newFileName: string) {
     });
   })
 }
+
+const handleDeleteUserFolderBucket = async (userId: string, path: string) => {
+  const fileRef = bucket.file(`${userId}/${path}_${userId}`);
+  const result = await fileRef.delete();
+
+  return result;
+}
+
+export { uploadImage, handleDeleteUserFolderBucket }
