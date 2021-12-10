@@ -9,6 +9,10 @@
 </head>
 
 <script>
+
+  var url = window.location.pathname;
+  var id = url.substring(url.lastIndexOf('/') + 1);
+
   function handleConfirm() {
     fetch(`http://localhost:3333/validade/email/ac3e6428-e1b5-41c1-94da-999d71638c02`,
       {

@@ -4,8 +4,9 @@ import { sign } from 'jsonwebtoken';
 
 import { uploadImage } from '../middlewares/UploadImage';
 
-import handleSendEmail from '../infrastructure/providers/NodeMailerService';
+import EmailTemplate from '../EmailTemplates/ValidateEmail';
 
+import handleSendEmail from './NodeMailerService';
 interface IUserBody {
   email: string,
   password: string,
@@ -50,7 +51,11 @@ class AuthenticateUserService {
       to: user.email,
       subject: 'Confimação de Email - Movie Party',
       text: 'Olá! esse é um email de teste',
-      html: `http://localhost:3333/validade_email/${user.id}`
+      html: EmailTemplate({
+        link: `https://falaagro.com/validade-email/?${user.id}`,
+        username: 'Kaê Benning',
+        email: 'kaeteixeiraleal@gmail.com'
+      })
     });
 
     const imageUrl = await uploadImage(user.id, file, 'profile_image');
@@ -126,7 +131,11 @@ class AuthenticateUserService {
       to: 'kaeteixeiraleal@gmail.com',
       subject: 'Confimação de Email - Movie Party',
       text: 'Olá! esse é um email de teste',
-      html: `http://localhost:3333/validade_email/${id}`
+      html: EmailTemplate({
+        link: `https://falaagro.com/validade-email/?${id}`,
+        username: 'Kaê Benning',
+        email: 'kaeteixeiraleal@gmail.com'
+      })
     });
 
     return { message: 'Email successfully sent' };
